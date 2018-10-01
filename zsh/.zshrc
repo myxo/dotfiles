@@ -1,3 +1,5 @@
+stty -ixon # disable ctrl-S and ctrl-Q in terminal
+
 if [ $SSH_TTY ]; then
     EDITOR=vim
 else
@@ -45,9 +47,12 @@ fi
 #RPROMPT=$'%{\e[1;34m%}%T%{\e[0m%}' # right prompt with time
 prompt pure
 
+# Show if console is open from ranger
+[ -n "$RANGER_LEVEL" ] && PS1='(in ranger) '"$PS1"
+
 TIMEFMT=$'\nreal\t%E\nuser\t%U\nsys\t%S'
 
-alias ls='ls -h --color=auto'
+alias ls='ls -h --color=auto --group-directories-first'
 alias ll='ls -lh --color=auto --group-directories-first'
 alias grep='grep --colour=auto'
 alias df='df -h'
@@ -63,17 +68,6 @@ alias nd='nautilus --no-desktop'
 alias ra='ranger'
 alias gh='git hist'
 
-if [ -f /usr/bin/grc ]; then
- alias gcc="grc --colour=auto gcc"
- alias g++="grc --colour=auto g++"
- alias log="grc --colour=auto log"
- alias netstat="grc --colour=auto netstat"
- alias ping="grc --colour=auto ping"
- alias piy="grc --colour=auto ping ya.ru"
- alias proftpd="grc --colour=auto proftpd"
- alias traceroute="grc --colour=auto traceroute"
-fi
-
 # Enable automatic rehash of commands 
 _force_rehash() { 
     (( CURRENT == 1 )) && rehash 
@@ -83,20 +77,17 @@ zstyle ':completion:*' completer _oldlist _expand _force_rehash _complete
 
 unsetopt beep
 
-
 export _JAVA_AWT_WM_NONREPARENTING=1
 
-export PATH=$PATH:/home/myxo/build/processing-2.2.1
-export PATH=$PATH:/home/myxo/.cabal/bin
 export PATH=$PATH:/home/myxo/.cargo/bin
 export PATH=$PATH:$HOME/.local/bin
 
 export NUPIC=$HOME/build/nupic
 export NUPIC_CORE=$HOME/build/nupic.core
-export ycmd_path=/home/myxo/build/CppYCM-compiled-ycmd/
-export PG_OF_PATH=/home/myxo/build/of_v0.9.3_linux64_release
 export NO_AT_BRIDGE=1
 
+
+# script for extracting from different archives
 ex () {
  if [ -f $1 ] ; then
    case $1 in
@@ -120,6 +111,7 @@ ex () {
 }
 
 
+# Run ranger with ability to return directory to zsh (do not actually use it)
 function ranger-cd {
     tempfile="$(mktemp -t tmp.XXXXXX)"
     /usr/bin/ranger --choosedir="$tempfile" "${@:-$(pwd)}"
@@ -131,6 +123,5 @@ function ranger-cd {
 }
 
 
-bindkey -s '^O' 'ranger-cd\n'
 #ranger-cd will fire for Ctrl+O
-[ -n "$RANGER_LEVEL" ] && PS1='(in ranger) '"$PS1"
+bindkey -s '^O' 'ranger-cd\n'
