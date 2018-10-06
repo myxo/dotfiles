@@ -8,8 +8,6 @@ local lain  = require("lain")
 local calendar = require("awful.widget.calendar_popup")
 
 local batteryarc_widget = require("awesome-wm-widgets.batteryarc-widget.batteryarc")
-local cpu_widget = require("awesome-wm-widgets.cpu-widget.cpu-widget")
--- local cpu_max_widget = require("cpu_max.cpu-max-widget")
 local brightness_widget = require("awesome-wm-widgets.brightness-widget.brightness")
 local volume_widget = require("awesome-wm-widgets.volume-widget.volume")
 
@@ -51,6 +49,18 @@ function colorize(val, low, high, col1, col2, col3)
     return '<span color="' .. color_ .. '">' .. val .. '</span>'
 end
 
+function max(t)
+    if #t == 0 then return nil, nil end
+    local key, value = 1, t[1]
+    for i = 2, #t do
+        if value < t[i] then
+            key, value = i, t[i]
+        end
+    end
+    return value
+end
+
+
 -- {{{ Menu
 -- Create a launcher widget and a main menu
 myawesomemenu = {
@@ -90,6 +100,16 @@ lain.widget.calendar({
     }
 })
 
+local cpu_graph_widget = wibox.widget {
+    max_value = 100,
+    color = '#74aeab',
+    background_color = "#00000000",
+    forced_width = 50,
+    step_width = 2,
+    step_spacing = 1,
+    widget = wibox.widget.graph
+}
+
 local cpu_max_graph_widget = wibox.widget {
     max_value = 100,
     color = '#74aeab',
@@ -101,14 +121,35 @@ local cpu_max_graph_widget = wibox.widget {
 }
 
 -- mirros and pushs up a bit
+local cpu_widget = wibox.container.margin(wibox.container.mirror(cpu_graph_widget, { horizontal = true }), 0, 0, 0, 2)
 local cpu_max_widget = wibox.container.margin(wibox.container.mirror(cpu_max_graph_widget, { horizontal = true }), 0, 0, 0, 2)
- 
+
 cpuwidget = wibox.widget.textbox()
 vicious.register(cpuwidget, vicious.widgets.cpu, 
         function (widget, args)
-            -- cpu_max_widget:add_value(args[1])
-            return "cpu: " .. colorize(args[2]) .. " " .. colorize(args[3]) .. " " .. colorize(args[4]) .. " " .. colorize(args[5]) .. " " .. colorize(args[6]) .. " " .. colorize(args[7]) .. " " .. colorize(args[8]) .. " " .. colorize(args[9])
-        end, 3)
+            
+            local total_usage = args[1]
+            if total_usage > 80 then
+                cpu_graph_widget:set_color('#ff4136')
+            else
+                cpu_graph_widget:set_color('#74aeab')
+            end    
+            cpu_graph_widget:add_value(total_usage)
+            
+
+            local single_max_usage = max(args)
+            if single_max_usage > 80 then
+                cpu_max_graph_widget:set_color('#ff4136')
+            else
+                cpu_max_graph_widget:set_color('#74aeab')
+            end    
+            cpu_max_graph_widget:add_value(single_max_usage)
+            
+            local text_widget_string = 
+                "cpu: " .. colorize(args[2]) .. " " .. colorize(args[3]) .. " " .. colorize(args[4]) .. " " .. colorize(args[5]) .. " " .. colorize(args[6]) .. " " .. colorize(args[7]) .. " " .. colorize(args[8]) .. " " .. colorize(args[9])
+            return text_widget_string
+        end, 
+        1)
  
  
  memwidget = wibox.widget.textbox()
@@ -227,7 +268,7 @@ vicious.register(cpuwidget, vicious.widgets.cpu,
              mykeyboardlayout,
              sprtr,
              cpu_widget,sprtr,
-            --  cpu_max_widget,sprtr,
+             cpu_max_widget,sprtr,
             --  cpuwidget,
              tempwidget, sprtr,
              memwidget, sprtr,
