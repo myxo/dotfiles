@@ -81,6 +81,7 @@ export _JAVA_AWT_WM_NONREPARENTING=1
 
 export PATH=$PATH:/home/myxo/.cargo/bin
 export PATH=$PATH:$HOME/.local/bin
+export PATH=$PATH:$HOME/.local/scripts
 
 export NUPIC=$HOME/build/nupic
 export NUPIC_CORE=$HOME/build/nupic.core

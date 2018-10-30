@@ -1,0 +1,11 @@
+#!/usr/bin/env bash
+
+if [ -n "$1" ]; then
+    $@
+
+else
+    echo 'code projects/os/kernel/'
+    echo 'code projects/game/'
+    echo 'code projects/remu/'
+    echo 'code .config/awesome/'
+fi

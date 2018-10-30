@@ -5,3 +5,4 @@ cp ~/.config/awesome/rc.lua awesome/rc.lua
 cp ~/start.sh awesome/start.sh
 cp ~/.config/ranger/rc.conf ranger/rc.conf
 cp ~/.gitconfig_impl git/.gitconfig_impl
+cp ~/.local/scripts/choose_project scripts/choose_project
