@@ -71,11 +71,11 @@ end)
 client.connect_signal("focus", 
     function(c) 
         -- dbg()
-        if c.maximized_horizontal == true and c.maximized_vertical == true then
+        if c.maximized == true or c.fullscreen == true then
             c.border_color = beautiful.border_normal
-          else
+        else
             c.border_color = beautiful.border_focus
-          end
+        end
     end
 )
 
