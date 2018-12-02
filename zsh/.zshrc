@@ -6,29 +6,32 @@ else
     EDITOR=vim
 fi
 
-# fpath+=('/usr/local/lib/node_modules/pure-prompt/functions')
-source ~/.zsh/zsh-autosuggestions/zsh-autosuggestions.zsh
 
-# The following lines were added by compinstall
+export ZSH=$HOME/.oh-my-zsh
+#ZSH_THEME="refined"
 
-#zstyle ':completion:*' completer _complete _ignored
+plugins=(
+    compleat 
+    colored-man-pages
+    cp
+    zsh-autosuggestions
+    zsh-syntax-highlighting
+)
+source $ZSH/oh-my-zsh.sh
+
+
 zstyle ':completion:*' menu select
 zstyle :compinstall filename '/home/myxo/.zshrc'
 
 autoload -U promptinit && promptinit
-#autoload -U compinit promptinit
-compinit
 promptinit;
 
-# End of lines added by compinstall
-# Lines configured by zsh-newuser-install
 HISTFILE=~/.histfile
 HISTSIZE=1000
 SAVEHIST=1000
 setopt HIST_IGNORE_DUPS
 setopt share_history
-# End of lines configured by zsh-newuser-install
-#
+
 
 bindkey '\e[3~' delete-char # del
 bindkey ';5D' backward-word # ctrl+left 
@@ -48,7 +51,7 @@ fi
 prompt pure
 
 # Show if console is open from ranger
-[ -n "$RANGER_LEVEL" ] && PS1='(in ranger) '"$PS1"
+[ -n "$RANGER_LEVEL" ] && PS1='%F{yellow}(in ranger) '"$PS1"
 
 TIMEFMT=$'\nreal\t%E\nuser\t%U\nsys\t%S'
 
@@ -67,6 +70,8 @@ alias psg='ps aux | grep '
 alias nd='nautilus --no-desktop'
 alias ra='ranger'
 alias gh='git hist'
+alias mk='make -j4'
+alias mr='make -j4 run'
 
 # Enable automatic rehash of commands 
 _force_rehash() { 
@@ -126,3 +131,5 @@ function ranger-cd {
 
 #ranger-cd will fire for Ctrl+O
 bindkey -s '^O' 'ranger-cd\n'
+
+
