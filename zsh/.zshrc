@@ -1,4 +1,5 @@
 stty -ixon # disable ctrl-S and ctrl-Q in terminal
+DISABLE_AUTO_UPDATE=true
 
 if [ $SSH_TTY ]; then
     EDITOR=vim
@@ -22,6 +23,10 @@ source $ZSH/oh-my-zsh.sh
 
 zstyle ':completion:*' menu select
 zstyle :compinstall filename '/home/myxo/.zshrc'
+zstyle ':completion:*' completer _oldlist _expand _force_rehash _complete
+zstyle ':completion:*' matcher-list ''
+unsetopt AUTO_CD
+
 
 autoload -U promptinit && promptinit
 promptinit;
@@ -45,7 +50,7 @@ then
     PURE_PROMPT_SYMBOL=%
 else
 #    PROMPT=$'%{\e[1;32m%}%n %{\e[1;34m%}%~ %#%{\e[0m%} ' # root dir #
-    PURE_PROMPT_SYMBOL=\&
+    PURE_PROMPT_SYMBOL=⟶
 fi
 #RPROMPT=$'%{\e[1;34m%}%T%{\e[0m%}' # right prompt with time
 prompt pure
@@ -70,15 +75,16 @@ alias psg='ps aux | grep '
 alias nd='nautilus --no-desktop'
 alias ra='ranger'
 alias gh='git hist'
-alias mk='make -j4'
-alias mr='make -j4 run'
+alias mk='make'
+alias mkm='make -j8'
+alias mkc='make clean'
+alias mr='make run'
 
 # Enable automatic rehash of commands 
 _force_rehash() { 
     (( CURRENT == 1 )) && rehash 
         return 1   # Because we didn't really complete anything 
 } 
-zstyle ':completion:*' completer _oldlist _expand _force_rehash _complete
 
 unsetopt beep
 

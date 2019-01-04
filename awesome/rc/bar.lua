@@ -160,6 +160,13 @@ vicious.register(cpuwidget, vicious.widgets.cpu,
  
  tempwidget = wibox.widget.textbox()
  vicious.register(tempwidget, vicious.widgets.thermal, " $1C", 7, "thermal_zone0")
+ 
+ batwidget = wibox.widget.textbox()
+ -- vicious.register(batwidget, vicious.widgets.bat, "bat: $2% $3", 11, "BAT0")
+ vicious.register(batwidget, vicious.widgets.bat, 
+         function (widget, args)
+             return "bat: " .. colorize(args[2], 10, 20, 'red', 'green', '#ddddff') .. "% " .. args[3]
+         end, 11, "BAT0")
 
  sprtr = wibox.widget{
     markup = ' <span color="#0C0CC5"><b>|</b></span> ',
@@ -168,6 +175,7 @@ vicious.register(cpuwidget, vicious.widgets.cpu,
     widget = wibox.widget.textbox
 }
  
+
  -- Create a wibox for each screen and add it
  local taglist_buttons = awful.util.table.join(
                      awful.button({ }, 1, function(t) t:view_only() end),
@@ -272,14 +280,11 @@ vicious.register(cpuwidget, vicious.widgets.cpu,
             --  cpuwidget,
              tempwidget, sprtr,
              memwidget, sprtr,
-             batteryarc_widget, sprtr,
+             batwidget, sprtr,
              -- battery_widget,
              -- sprtr,
-             volume_widget,
-             sprtr,
-             brightness_widget,
-            --  batwidget,
-             sprtr,
+             volume_widget, sprtr,
+             brightness_widget, sprtr,
             --  datewidget,
              mytextclock,
              sprtr,
