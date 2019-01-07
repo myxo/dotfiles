@@ -1,11 +1,7 @@
 stty -ixon # disable ctrl-S and ctrl-Q in terminal
 DISABLE_AUTO_UPDATE=true
 
-if [ $SSH_TTY ]; then
-    EDITOR=vim
-else
-    EDITOR=vim
-fi
+EDITOR=nvim
 
 
 export ZSH=$HOME/.oh-my-zsh
@@ -79,6 +75,7 @@ alias mk='make'
 alias mkm='make -j8'
 alias mkc='make clean'
 alias mr='make run'
+alias nv='nvim'
 
 # Enable automatic rehash of commands 
 _force_rehash() { 

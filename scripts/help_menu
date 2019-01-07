@@ -1,0 +1,12 @@
+#!/usr/bin/env bash
+
+if [ -n "$1" ]; then 
+    case $@ in
+      "vim cheet sheet") feh --auto-zoom -x ~/scripts/help_pages/vim_cheat_sheet.png > /dev/null 2>&1 & ;;
+       *) notify-send "Wrong argument to help_menu script" ;;
+    esac
+
+else
+    echo 'vim cheet sheet'
+    echo 'test'
+fi
