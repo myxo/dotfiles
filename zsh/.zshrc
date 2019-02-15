@@ -71,10 +71,12 @@ alias psg='ps aux | grep '
 alias nd='nautilus --no-desktop'
 alias ra='ranger'
 alias gh='git hist'
+alias gst='git status'
 alias mk='make'
 alias mkm='make -j8'
 alias mkc='make clean'
 alias mr='make run'
+alias vim='nvim'
 alias nv='nvim'
 
 # Enable automatic rehash of commands 
@@ -89,7 +91,7 @@ export _JAVA_AWT_WM_NONREPARENTING=1
 
 export PATH=$PATH:/home/myxo/.cargo/bin
 export PATH=$PATH:$HOME/.local/bin
-export PATH=$PATH:$HOME/.local/scripts
+export PATH=$PATH:$HOME/scripts
 
 export NUPIC=$HOME/build/nupic
 export NUPIC_CORE=$HOME/build/nupic.core

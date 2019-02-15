@@ -4,8 +4,8 @@ call plug#begin('~/.local/share/nvim/plugged')
 
 Plug 'scrooloose/nerdcommenter'
 Plug 'junegunn/goyo.vim'
-Plug 'jacoborus/tender.vim'
 Plug 'morhetz/gruvbox'
+Plug 'ctrlpvim/ctrlp.vim'
 
 call plug#end()
 
@@ -22,11 +22,12 @@ call plug#end()
         set tabstop=8 softtabstop=0 expandtab shiftwidth=4 smarttab
         set ruler
         set wrap
+        set cursorline
 
 
 " For copy/paste to another programs:
         vnoremap <C-c> "*Y :let @+=@*<CR>
-        map <C-p> "+P
+        map <C-y> "+P
 
 " Enable autocompletion in command:
         set wildmode=longest,list,full

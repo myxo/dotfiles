@@ -9,8 +9,7 @@
     co = checkout
     ci = commit
     st = status
-    hist = log --pretty=format:\"%h %ad | %s%Cblue%d%Cgreen [%an]%Creset\" --graph --date=short -20
+    hist = log --pretty=format:\"%h %ad | %s%Cblue%d%Cgreen [%an]%Creset\" --graph --date=short
 [core]
     editor = vim
-[pager]
-    log = false
+    pager = less -FRX
