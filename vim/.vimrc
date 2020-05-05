@@ -8,6 +8,7 @@ Plug 'junegunn/goyo.vim'
 Plug 'morhetz/gruvbox'
 Plug 'ctrlpvim/ctrlp.vim'
 Plug 'unblevable/quick-scope'
+Plug 'vimwiki/vimwiki'
 
 Plug 'wikitopian/hardmode'
 
@@ -81,6 +82,8 @@ map <F4> :execute " grep -srnw --binary-files=without-match --exclude-dir=.git .
 
 " quick-scope: trigger a highlight in the appropriate direction when pressing these keys:
 let g:qs_highlight_on_keys = ['f', 'F', 't', 'T']
+
+let g:vimwiki_list = [{ 'path' : '~/vimwiki/', 'syntax' : 'markdown', 'ext' : 'md' }]
 
 set autoread
 
