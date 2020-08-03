@@ -30,7 +30,7 @@ call plug#end()
         set ruler
         set wrap
         set cursorline
-        set scrolloff=20
+        set scrolloff=5
 "        set inccommand=nosplit  " interactive replace preview
         set colorcolumn=120
 
@@ -76,21 +76,31 @@ call plug#end()
         nnoremap <Leader>oC :e %<.cpp<CR>
         nnoremap <Leader>oh :e %<.h<CR>
 
+" Reload vimrc
+        nnoremap <leader>rv :source<Space>$MYVIMRC<cr>
+
+" Edit vimrc
+        nnoremap <leader>ev :vs $MYVIMRC<cr>
+
+" Build and run (TODO: make actual build script for common cases)
+        nnoremap <leader>rr :!gcc % -o %:r && ./%:r<cr>
+
 " Find word under cursor in current and subdirectories
 " map <F4> :execute "vimgrep /" . expand("<cword>") . "/j **" <Bar> cw<CR>
-map <F4> :execute " grep -srnw --binary-files=without-match --exclude-dir=.git . -e " . expand("<cword>") . " " <bar> cwindow<CR>
+        map <F4> :execute " grep -srnw --binary-files=without-match --exclude-dir=.git . -e " . expand("<cword>") . " " <bar> cwindow<CR>
 
 " quick-scope: trigger a highlight in the appropriate direction when pressing these keys:
-let g:qs_highlight_on_keys = ['f', 'F', 't', 'T']
+        let g:qs_highlight_on_keys = ['f', 'F', 't', 'T']
 
-let g:vimwiki_list = [{ 'path' : '~/vimwiki/', 'syntax' : 'markdown', 'ext' : 'md' }]
+" Vimwiki
+        let g:vimwiki_list = [{ 'path' : '~/vimwiki/', 'syntax' : 'markdown', 'ext' : 'md' }]
 
 set autoread
 
-if (has("termguicolors"))
-    set termguicolors
-    set background=dark 
-    let g:gruvbox_contrast_dark='hard'
-    colorscheme gruvbox 
-endif
-
+" Gruvbox settings
+        if (has("termguicolors"))
+            set termguicolors
+            set background=dark 
+            let g:gruvbox_contrast_dark='hard'
+            colorscheme gruvbox 
+        endif
