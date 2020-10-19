@@ -6,6 +6,7 @@ EDITOR=nvim
 
 export ZSH=$HOME/.oh-my-zsh
 #ZSH_THEME="refined"
+fpath+=$HOME/.zsh/pure
 
 plugins=(
     compleat 
@@ -46,7 +47,7 @@ then
     PURE_PROMPT_SYMBOL=%
 else
 #    PROMPT=$'%{\e[1;32m%}%n %{\e[1;34m%}%~ %#%{\e[0m%} ' # root dir #
-    PURE_PROMPT_SYMBOL=⟶
+    PURE_PROMPT_SYMBOL='>'
 fi
 #RPROMPT=$'%{\e[1;34m%}%T%{\e[0m%}' # right prompt with time
 prompt pure
