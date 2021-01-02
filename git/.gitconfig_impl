@@ -11,6 +11,7 @@
     st = status
     new = checkout -b
     hist = log --pretty=format:\"%h %ad | %s%Cblue%d%Cgreen [%an]%Creset\" --graph --date=short
+    upmaster = fetch origin master:master
 [core]
     editor = vim
     pager = less -FRX
