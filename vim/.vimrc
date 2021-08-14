@@ -8,7 +8,6 @@ Plug 'junegunn/goyo.vim'
 Plug 'morhetz/gruvbox'
 Plug 'unblevable/quick-scope'
 Plug 'vimwiki/vimwiki'
-Plug 'ThePrimeagen/vim-be-good', {'do': './install.sh'}
 
 " Fuzzy finder
 Plug 'airblade/vim-rooter'
@@ -16,6 +15,8 @@ Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
 Plug 'junegunn/fzf.vim'
 
 Plug 'neoclide/coc.nvim', {'branch': 'release'}
+Plug 'ptzz/lf.vim'
+Plug 'voldikss/vim-floaterm'
 
 " lol
 Plug 'wikitopian/hardmode'
@@ -132,7 +133,7 @@ call plug#end()
 
 set autoread
 
-" Gruvbox settings
+" Gruvbox
         if (has("termguicolors"))
             set termguicolors
             set background=dark 
@@ -140,9 +141,13 @@ set autoread
             colorscheme gruvbox 
         endif
 
-
-
-
+" Floaterm
+        let g:floaterm_width = 0.8
+        let g:floaterm_height = 0.8
+        let g:floaterm_autoclose = 1 " Close window if the job exits normally
+        " let g:floaterm_keymap_new = '<Leader>t'
+        nnoremap   <silent>   <F12>   :FloatermToggle<CR>
+        tnoremap   <silent>   <F12>   <C-\><C-n>:FloatermToggle<CR>
 
 
 " >>>>>>>>>>>> Coc settings
