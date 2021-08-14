@@ -3,8 +3,6 @@
 #	path=.gitconfig_impl
 
 
-[push]
-    default = simple
 [alias]
     co = checkout
     ci = commit
@@ -12,8 +10,12 @@
     new = checkout -b
     hist = log --pretty=format:\"%h %ad | %s%Cblue%d%Cgreen [%an]%Creset\" --graph --date=short
     upmaster = fetch origin master:master
+    wip = commit -m WIP
+    amend = commit --amend
 [core]
     editor = vim
     pager = less -FRX
 [pull]
     ff = only
+[push]
+    default = upstream
