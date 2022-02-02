@@ -8,20 +8,19 @@ Plug 'junegunn/goyo.vim'
 Plug 'morhetz/gruvbox'
 Plug 'unblevable/quick-scope'
 Plug 'vimwiki/vimwiki'
+Plug 'rhysd/vim-clang-format'
+Plug 'vim-airline/vim-airline'
 
-" Fuzzy finder
+Plug 'nvim-lua/plenary.nvim'
+Plug 'nvim-telescope/telescope.nvim'
+
 Plug 'airblade/vim-rooter'
-Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
-Plug 'junegunn/fzf.vim'
-
 Plug 'neoclide/coc.nvim', {'branch': 'release'}
 Plug 'ptzz/lf.vim'
 Plug 'voldikss/vim-floaterm'
 
 " lol
 Plug 'wikitopian/hardmode'
-
-Plug 'liuchengxu/vim-which-key'
 
 call plug#end()
 
@@ -93,11 +92,9 @@ call plug#end()
     vnoremap < <gv
     vnoremap > >gv
 
-" Fzf
-    nnoremap <leader>p :GFiles --cached --others --exclude-standard<cr>
-    nnoremap <leader>; :Buffers<cr>
-
-    let g:fzf_layout = {'up':'~90%', 'window': { 'width': 0.8, 'height': 0.8, 'xoffset': 0.5}}
+" Telescope
+    nnoremap <leader>p <cmd>Telescope find_files<cr>
+    nnoremap <F4> <cmd>Telescope live_grep<cr>
 
 
 " Escape terminal
@@ -128,8 +125,8 @@ call plug#end()
     cmap w!! w !sudo tee %
 
 " Find word under cursor in current and subdirectories
-" map <F4> :execute "vimgrep /" . expand("<cword>") . "/j **" <Bar> cw<CR>
-    map <F4> :execute " grep -srnw --binary-files=without-match --exclude-dir=.git . -e " . expand("<cword>") . " " <bar> cwindow<CR>
+    " map <F4> :execute "vimgrep /" . expand("<cword>") . "/j **" <Bar> cw<CR>
+    " map <F4> :execute " grep -srnw --binary-files=without-match --exclude-dir=.git . -e " . expand("<cword>") . " " <bar> cwindow<CR>
 
 " quick-scope: trigger a highlight in the appropriate direction when pressing these keys:
     let g:qs_highlight_on_keys = ['f', 'F', 't', 'T']
@@ -155,11 +152,11 @@ set autoread
     nnoremap   <silent>   <F12>   :FloatermToggle<CR>
     tnoremap   <silent>   <F12>   <C-\><C-n>:FloatermToggle<CR>
 
-" WhichKey
-    nnoremap <silent> <leader> :WhichKey '<Space>'<CR>
+" clang-format
+    nnoremap <leader>q :ClangFormat<cr>
 
 " >>>>>>>>>>>> Coc settings
-
+ 
 
 " Having longer updatetime (default is 4000 ms = 4 s) leads to noticeable
 " delays and poor user experience.
