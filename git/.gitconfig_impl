@@ -13,7 +13,7 @@
     wip = commit -m WIP
     amend = commit --amend
 [core]
-    editor = vim
+    editor = nvim
     pager = less -FRX
 [pull]
     ff = only
