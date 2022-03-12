@@ -3,10 +3,8 @@ DISABLE_AUTO_UPDATE=true
 
 EDITOR=nvim
 
-
-export ZSH=$HOME/.oh-my-zsh
-#ZSH_THEME="refined"
 fpath+=$HOME/.zsh/pure
+export ZSH=$HOME/.oh-my-zsh
 
 plugins=(
     compleat 
@@ -43,17 +41,9 @@ bindkey "^[[B"  history-beginning-search-forward
 
 if [[ $EUID == 0 ]] 
 then
-#    PROMPT=$'%{\e[1;31m%}%n %{\e[1;34m%}%~ #%{\e[0m%} ' # user dir %
     PURE_PROMPT_SYMBOL=%
-else
-#    PROMPT=$'%{\e[1;32m%}%n %{\e[1;34m%}%~ %#%{\e[0m%} ' # root dir #
-    PURE_PROMPT_SYMBOL='>'
 fi
-#RPROMPT=$'%{\e[1;34m%}%T%{\e[0m%}' # right prompt with time
 prompt pure
-
-# Show if console is open from ranger
-[ -n "$RANGER_LEVEL" ] && PS1='%F{yellow}(in ranger) '"$PS1"
 
 TIMEFMT=$'\nreal\t%E\nuser\t%U\nsys\t%S'
 
@@ -62,10 +52,6 @@ alias ll='ls -lh --color=auto --group-directories-first'
 alias grep='grep --colour=auto'
 alias df='df -h'
 alias du='du -h --max-depth=1 | sort -h'
-alias aupdate='sudo apt update'
-alias aupgrade='sudo apt upgrade'
-alias ainstall='sudo apt install '
-alias asearch='apt search '
 alias piy='ping ya.ru'
 alias ht='htop'
 alias psg='ps aux | grep '
@@ -77,8 +63,8 @@ alias mk='make'
 alias mkm='make -j8'
 alias mkc='make clean'
 alias mr='make run'
-alias vim='nvim'
 alias nv='nvim'
+alias fm='vifm'
 
 # Enable automatic rehash of commands 
 _force_rehash() { 
@@ -93,10 +79,7 @@ export _JAVA_AWT_WM_NONREPARENTING=1
 export PATH=$PATH:/home/myxo/.cargo/bin
 export PATH=$PATH:$HOME/.local/bin
 export PATH=$PATH:$HOME/scripts
-
-export NUPIC=$HOME/build/nupic
-export NUPIC_CORE=$HOME/build/nupic.core
-export NO_AT_BRIDGE=1
+export PATH=$PATH:$HOME/app/bin
 
 
 # script for extracting from different archives
@@ -122,20 +105,4 @@ ex () {
  fi
 }
 
-
-# Run ranger with ability to return directory to zsh (do not actually use it)
-function ranger-cd {
-    tempfile="$(mktemp -t tmp.XXXXXX)"
-    /usr/bin/ranger --choosedir="$tempfile" "${@:-$(pwd)}"
-    test -f "$tempfile" &&
-    if [ "$(cat -- "$tempfile")" != "$(echo -n `pwd`)" ]; then
-        cd -- "$(cat "$tempfile")"
-    fi  
-    rm -f -- "$tempfile"
-}
-
-
-#ranger-cd will fire for Ctrl+O
-bindkey -s '^O' 'ranger-cd\n'
-
-
+setopt no_share_history
