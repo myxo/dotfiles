@@ -63,7 +63,7 @@ call plug#end()
     vim.opt.ignorecase = true
 
 -- Permament undo
-    vim.opt.undodir = "~/.vimdid"
+    vim.opt.undodir = os.getenv("HOME") .. "/.vimdid"
     vim.opt.undofile = true
 
 
