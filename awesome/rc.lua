@@ -8,7 +8,7 @@ local naughty = require("naughty")
 local menubar = require("menubar")
 local vicious = require("vicious")
 local hotkeys_popup = require("awful.hotkeys_popup").widget
-local dbg = require("debugger")
+--local dbg = require("debugger")
 
 
 

@@ -99,9 +99,6 @@ globalkeys = awful.util.table.join(
     awful.key({ }, "XF86MonBrightnessUp", function ()
             awful.util.spawn("xbacklight -inc 10", false) end),
 
-    -- awful.key({  }, "#78", function () scratch.drop("x-terminal-emulator", "top", "left", 1.0, 0.4) end),
-    -- awful.key({ }, "F12", function () awful.screen.focused().quake:toggle() end),
-    -- awful.key({ modkey, }, "z", function () quake:toggle() end),R
     awful.key({ modkey, }, "z", function () awful.screen.focused().quake:toggle() end,
               {description = "dropdown application", group = "launcher"}),
 

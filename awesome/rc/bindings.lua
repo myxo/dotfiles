@@ -34,7 +34,7 @@ globalkeys = awful.util.table.join(
         end),
 
     -- Standard program
-    awful.key({ modkey,           }, "Return", function () awful.util.spawn(terminal) end),
+    awful.key({ modkey,           }, "Return", function () awful.util.spawn("tabbed  alacritty --embed &") end),
     awful.key({ modkey, "Control" }, "r", awesome.restart),
     awful.key({ modkey, "Shift"   }, "q", awesome.quit),
 
@@ -74,10 +74,6 @@ globalkeys = awful.util.table.join(
             awful.util.spawn("amixer set Master 5%-", false) end),
     awful.key({ }, "XF86AudioMute", function ()
             awful.util.spawn("amixer -D pulse set Master toggle", false) end),
-
-    -- awful.key({ modkey }, "F12", function () scratch.drop("x-terminal-emulator", "top", 1.0, 1.0, 0.4) end),
-    -- awful.key({  }, "#78", function () scratch.drop("x-terminal-emulator", "top", "left", 1.0, 0.4) end),
-    -- awful.key({  }, "#135", function () scratch.drop("x-terminal-emulator", "top", "left", 1.0, 0.4) end),
 
     awful.key({ modkey }, "x",
               function ()

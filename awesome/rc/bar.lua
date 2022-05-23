@@ -90,15 +90,15 @@ myawesomemenu = {
  -- {{{ Wibar
  -- Create a textclock widget
 mytextclock = wibox.widget.textclock("<span color=\"#dda637\">%a %d %b, %H:%M:%S</span>", 1)
-lain.widget.calendar({
-    attach_to = { mytextclock },
-    notification_preset = {
+-- lain.widget.calendar({
+--    attach_to = { mytextclock },
+--    notification_preset = {
         -- font = "Misc Tamsyn 11",
-        font = "Monospace 10",
-        fg   = theme.fg_normal,
-        bg   = theme.bg_normal
-    }
-})
+--        font = "Monospace 10",
+--        fg   = theme.fg_normal,
+--        bg   = theme.bg_normal
+--    }
+--})
 
 local cpu_graph_widget = wibox.widget {
     max_value = 100,
@@ -281,11 +281,11 @@ vicious.register(cpuwidget, vicious.widgets.cpu,
              tempwidget, sprtr,
              memwidget, sprtr,
              batwidget, sprtr,
-             -- battery_widget,
-             -- sprtr,
-             volume_widget, sprtr,
-             brightness_widget, sprtr,
-            --  datewidget,
+             battery_widget,
+            --  sprtr,
+             volume_widget(), sprtr,
+             brightness_widget(), sprtr,
+             datewidget,
              mytextclock,
              sprtr,
              wibox.widget.systray(),
