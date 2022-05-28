@@ -21,8 +21,8 @@ dofile(config_path .. "rc/errors.lua")
 
 beautiful.init("/home/myxo/.config/awesome/themes/default/theme.lua")
 
-terminal = "tabbed -c alacritty --embed"
-editor = os.getenv("EDITOR") or "vim"
+terminal = os.getenv("TERMINAL") or "alacritty"
+editor = os.getenv("EDITOR") or "nvim"
 editor_cmd = terminal .. " -e " .. editor
 
 modkey = "Mod4"

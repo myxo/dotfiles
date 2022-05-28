@@ -126,12 +126,6 @@ globalkeys = awful.util.table.join(
     awful.key({ modkey },            "p",     function () awful.spawn("rofi -show run") end,
               {description = "run prompt", group = "launcher"}),
     
-	awful.key({ modkey },            "]",     function () awful.spawn("rofi -modi proj:/home/myxo/scripts/choose_project -show proj") end,
-              {description = "Open project in VS Code", group = "launcher"}),
-	
-	awful.key({ modkey },            "h",     function () awful.spawn("rofi -modi proj:/home/myxo/scripts/help_menu -show proj") end,
-              {description = "User help pages", group = "launcher"}),
-	
 	awful.key({ modkey, "Shift" },   "l",     function () awful.spawn("rofi -show window") end,
               {description = "Focus on app", group = "launcher"}),
 
