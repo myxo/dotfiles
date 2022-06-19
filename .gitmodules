@@ -1,0 +1,9 @@
+[submodule "awesome/.config/awesome/awesome-wm-widgets"]
+	path = awesome/.config/awesome/awesome-wm-widgets
+	url = https://github.com/streetturtle/awesome-wm-widgets
+[submodule "awesome/.config/awesome/themes/arc-icon-theme"]
+	path = awesome/.config/awesome/themes/arc-icon-theme
+	url = https://github.com/horst3180/arc-icon-theme
+[submodule "awesome/.config/awesome/lain"]
+	path = awesome/.config/awesome/lain
+	url = https://github.com/lcpz/lain
