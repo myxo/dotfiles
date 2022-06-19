@@ -80,8 +80,8 @@ export PATH=$PATH:/home/myxo/.cargo/bin
 export PATH=$PATH:$HOME/.local/bin
 export PATH=$PATH:$HOME/scripts
 export PATH=$PATH:$HOME/app/bin
+export PATH=$PATH:$HOME/go/bin
 export PATH=$PATH:/usr/local/go/bin
-
 
 # script for extracting from different archives
 ex () {
