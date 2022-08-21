@@ -27,11 +27,13 @@ local on_attach = function(client, bufnr)
   vim.keymap.set("n", "<leader>lf", vim.lsp.buf.formatting, {buffer = 0})
   vim.keymap.set("n", "<leader>la", vim.lsp.buf.code_action, {buffer = 0})
   vim.keymap.set("n", "<leader>ls", vim.lsp.buf.signature_help, {buffer = 0})
+
+  require "lsp_signature".on_attach(signature_setup, bufnr)
 end
 
 -- Use a loop to conveniently call 'setup' on multiple servers and
 -- map buffer local keybindings when the language server attaches
-local servers = { 'rls', 'gopls' }
+local servers = { 'gopls' }
 for _, lsp in pairs(servers) do
   require('lspconfig')[lsp].setup {
     capabilities = capabilities,
@@ -39,7 +41,22 @@ for _, lsp in pairs(servers) do
   }
 end
 
-require('lspconfig')['clangd'].setup {
+local nvim_lsp = require'lspconfig'
+
+nvim_lsp.rust_analyzer.setup{
+    on_attach = on_attach,
+    capabilities = {
+        textDocument = {
+            completion = {
+                completionItem = {
+                    snippetSupport = false
+                }
+            }
+        }
+    },
+}
+
+nvim_lsp.clangd.setup {
     capabilities = capabilities,
     on_attach = on_attach,
     cmd = { 'clangd-13' },
