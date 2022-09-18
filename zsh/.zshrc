@@ -107,3 +107,6 @@ ex () {
 }
 
 setopt no_share_history
+
+# opam configuration
+[[ ! -r /home/myxo/.opam/opam-init/init.zsh ]] || source /home/myxo/.opam/opam-init/init.zsh  > /dev/null 2> /dev/null
