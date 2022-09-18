@@ -31,6 +31,9 @@ call plug#end()
 ]]
 
 
+-- Can't believe I need to do this...
+vim.opt.mouse = ""
+
 -- Common
 vim.opt.encoding = "utf-8"
 vim.opt.fileencoding = "utf-8"
