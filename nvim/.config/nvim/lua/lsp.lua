@@ -3,7 +3,7 @@ vim.opt.completeopt = {"menu", "menuone", "noselect"}
 
 -- Mappings.
 -- See `:help vim.diagnostic.*` for documentation on any of the below functions
-local capabilities = require('cmp_nvim_lsp').update_capabilities(vim.lsp.protocol.make_client_capabilities())
+local capabilities = require('cmp_nvim_lsp').default_capabilities()
 local opts = { noremap=true, silent=true }
 
 -- Use an on_attach function to only map the following keys
