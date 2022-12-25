@@ -18,6 +18,7 @@ Plug 'airblade/vim-rooter'
 Plug 'ptzz/lf.vim'
 Plug 'voldikss/vim-floaterm'
 Plug 'lukas-reineke/indent-blankline.nvim'
+Plug 'folke/which-key.nvim'
 
 " LSP
 Plug 'neovim/nvim-lspconfig'
@@ -26,6 +27,11 @@ Plug 'hrsh7th/cmp-nvim-lsp'
 Plug 'L3MON4D3/LuaSnip'
 Plug 'saadparwaiz1/cmp_luasnip'
 Plug 'ray-x/lsp_signature.nvim'
+
+" DAP
+Plug 'mfussenegger/nvim-dap'
+Plug 'leoluz/nvim-dap-go'
+Plug 'rcarriga/nvim-dap-ui'
 
 call plug#end()
 ]]
@@ -77,28 +83,28 @@ vim.opt.undofile = true
 
 
 -- Esc is just too far
-vim.api.nvim_set_keymap("i", "jj", "<Esc>",  { noremap = true })
+vim.keymap.set('i', "jj", "<Esc>",  { noremap = true, desc = 'switch to normal mode' })
 
 -- Turn off hlsearch
-vim.api.nvim_set_keymap("n", "<leader>h", ":silent! nohls<cr>",  { noremap = true })
+vim.keymap.set("n", "<leader>h", ":silent! nohls<cr>",  { noremap = true, desc = 'silent highlight' })
 
 
 -- Goyo plugin makes text more readable when writing prose:
-vim.api.nvim_set_keymap("", "<leader>g", "<cmd>ZenMode<CR>",  { noremap = true })
+vim.keymap.set("n", "<leader>g", "<cmd>ZenMode<CR>",  { noremap = true, desc = 'zen mode' })
 
 -- Shortcutting split navigation, saving a keypress:
-vim.api.nvim_set_keymap("", "<C-h>", "<C-w>h",  { noremap = true })
-vim.api.nvim_set_keymap("", "<C-j>", "<C-w>j",  { noremap = true })
-vim.api.nvim_set_keymap("", "<C-k>", "<C-w>k",  { noremap = true })
-vim.api.nvim_set_keymap("", "<C-l>", "<C-w>l",  { noremap = true })
+vim.keymap.set("", "<C-h>", "<C-w>h",  { noremap = true })
+vim.keymap.set("", "<C-j>", "<C-w>j",  { noremap = true })
+vim.keymap.set("", "<C-k>", "<C-w>k",  { noremap = true })
+vim.keymap.set("", "<C-l>", "<C-w>l",  { noremap = true })
 
 -- Do not loose selection after tabbing
-vim.api.nvim_set_keymap("v", "<", "<gv",  { noremap = true })
-vim.api.nvim_set_keymap("v", ">", ">gv",  { noremap = true })
+vim.keymap.set("v", "<", "<gv",  { noremap = true })
+vim.keymap.set("v", ">", ">gv",  { noremap = true })
 
 -- Telescope
-vim.api.nvim_set_keymap("n", "<leader>p", "<cmd>Telescope find_files<cr>",  { noremap = true })
-vim.api.nvim_set_keymap("n", "<F4>", "<cmd>Telescope live_grep<cr>",  { noremap = true })
+vim.keymap.set("n", "<leader>p", "<cmd>Telescope find_files<cr>",  { noremap = true, desc = 'find files' })
+vim.keymap.set("n", "<F4>", "<cmd>Telescope live_grep<cr>",  { noremap = true, desc = 'grep' })
 
 -- Reload vimrc
 --    nnoremap <leader>rv :source<Space>$MYVIMRC<cr>
@@ -107,14 +113,14 @@ vim.api.nvim_set_keymap("n", "<F4>", "<cmd>Telescope live_grep<cr>",  { noremap 
 --    nnoremap <leader>ev :vs $MYVIMRC<cr>
 
 -- Toggles between last buffers
-vim.api.nvim_set_keymap("n", "<leader><leader>", "<c-^>",  { noremap = true })
+vim.keymap.set("n", "<leader><leader>", "<c-^>",  { noremap = true, desc = 'last buffer' })
 
 -- Really prefer to type :help
-vim.api.nvim_set_keymap("", "<F1>", "<Esc>",  { noremap = true })
-vim.api.nvim_set_keymap("i", "<F1>", "<Esc>",  { noremap = true })
+vim.keymap.set("", "<F1>", "<Esc>",  { noremap = true })
+vim.keymap.set("i", "<F1>", "<Esc>",  { noremap = true })
 
 -- Write readonly files
-vim.api.nvim_set_keymap("c", "w!!", "w !sudo tee %",  { noremap = true })
+vim.keymap.set("c", "w!!", "w !sudo tee %",  { noremap = true })
 
 -- quick-scope: trigger a highlight in the appropriate direction when pressing these keys:
 vim.g.qs_highlight_on_keys = {'f', 'F', 't', 'T'}
@@ -136,7 +142,7 @@ vim.cmd [[
 vim.g.floaterm_width = 0.8
 vim.g.floaterm_height = 0.8
 vim.g.floaterm_autoclose = 1 -- Close window if the job exits normally
-vim.api.nvim_set_keymap("n", "<F12>", ":FloatermToggle<CR>",  { noremap = true })
+vim.keymap.set("n", "<F12>", ":FloatermToggle<CR>",  { noremap = true })
 vim.cmd [[tnoremap   <silent>   <F12>   <C-\><C-n>:FloatermToggle<CR>]]
 
 -- Golang specifics, use tabs instead of spaces
@@ -146,6 +152,9 @@ vim.api.nvim_create_autocmd("FileType", {
     callback = function() vim.opt.expandtab = false end,
     group = go_group
 })
+
+require("which-key").setup {
+}
 
 
 require('lsp')

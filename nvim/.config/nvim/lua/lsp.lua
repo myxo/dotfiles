@@ -13,20 +13,19 @@ local on_attach = function(client, bufnr)
   vim.api.nvim_buf_set_option(bufnr, 'omnifunc', 'v:lua.vim.lsp.omnifunc')
 
   -- See `:help vim.lsp.*` for documentation on any of the below functions
-  vim.keymap.set("n", "K", vim.lsp.buf.hover, {buffer = 0})
-  vim.keymap.set("n", "gD", vim.lsp.buf.declaration, {buffer = 0})
-  vim.keymap.set("n", "gd", vim.lsp.buf.definition, {buffer = 0})
-  vim.keymap.set("n", "gi", vim.lsp.buf.implementation, {buffer = 0})
-  vim.keymap.set("n", "gt", vim.lsp.buf.type_definition, {buffer = 0})
-  -- vim.keymap.set("n", "gr", vim.lsp.buf.references, {buffer = 0})
-  vim.keymap.set("n", "gr", "<cmd>Telescope lsp_references<cr>", {buffer = 0})
-  vim.keymap.set("n", "<leader>dn", vim.diagnostic.goto_next, {buffer = 0})
-  vim.keymap.set("n", "<leader>dp", vim.diagnostic.goto_prev, {buffer = 0})
-  vim.keymap.set("n", "<leader>dl", "<cmd>Telescope diagnostics<cr>", {buffer = 0})
-  vim.keymap.set("n", "<leader>lr", vim.lsp.buf.rename, {buffer = 0})
-  vim.keymap.set("n", "<leader>lf", vim.lsp.buf.formatting, {buffer = 0})
-  vim.keymap.set("n", "<leader>la", vim.lsp.buf.code_action, {buffer = 0})
-  vim.keymap.set("n", "<leader>ls", vim.lsp.buf.signature_help, {buffer = 0})
+  vim.keymap.set("n", "K", vim.lsp.buf.hover, {buffer = 0, desc = 'hover help'})
+  vim.keymap.set("n", "gD", vim.lsp.buf.declaration, {buffer = 0, desc = 'declaration'})
+  vim.keymap.set("n", "gd", vim.lsp.buf.definition, {buffer = 0, desc = 'definition'})
+  vim.keymap.set("n", "gi", vim.lsp.buf.implementation, {buffer = 0, desc = 'implementation'})
+  vim.keymap.set("n", "gt", vim.lsp.buf.type_definition, {buffer = 0, desc = 'type defenition'})
+  vim.keymap.set("n", "gr", require('telescope.builtin').lsp_references, {desc = 'references'})
+  vim.keymap.set("n", "<leader>dn", vim.diagnostic.goto_next, {buffer = 0, desc = 'next problem'})
+  vim.keymap.set("n", "<leader>dp", vim.diagnostic.goto_prev, {buffer = 0, desc = 'prev problem'})
+  vim.keymap.set("n", "<leader>dl", "<cmd>Telescope diagnostics<cr>", {buffer = 0, desc = 'list problems'})
+  vim.keymap.set("n", "<leader>lr", vim.lsp.buf.rename, {buffer = 0, desc = 'rename'})
+  vim.keymap.set("n", "<leader>lf", vim.lsp.buf.formatting, {buffer = 0, desc = 'format'})
+  vim.keymap.set("n", "<leader>la", vim.lsp.buf.code_action, {buffer = 0, desc = 'code action'})
+  vim.keymap.set("n", "<leader>ls", vim.lsp.buf.signature_help, {buffer = 0, desc = 'signature'})
 
   require "lsp_signature".on_attach(signature_setup, bufnr)
 end
@@ -54,6 +53,7 @@ nvim_lsp.rust_analyzer.setup{
             }
         }
     },
+    cmd = { 'rustup',  'run', 'stable', 'rust-analyzer' },
 }
 
 nvim_lsp.clangd.setup {
