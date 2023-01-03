@@ -1,41 +1,89 @@
+local install_path = vim.fn.stdpath 'data' .. '/site/pack/packer/start/packer.nvim'
+local is_bootstrap = false
+if vim.fn.empty(vim.fn.glob(install_path)) > 0 then
+  is_bootstrap = true
+  vim.fn.system { 'git', 'clone', '--depth', '1', 'https://github.com/wbthomason/packer.nvim', install_path }
+  vim.cmd [[packadd packer.nvim]]
+end
+
+require('packer').startup(function(use)
+  use 'wbthomason/packer.nvim'
+
+  use { -- LSP
+    'neovim/nvim-lspconfig',
+    requires = {
+      -- Automatically install LSPs to stdpath for neovim
+      'williamboman/mason.nvim',
+      'williamboman/mason-lspconfig.nvim',
+
+      -- Useful status updates for LSP
+      'j-hui/fidget.nvim',
+
+      -- Additional lua configuration, makes nvim stuff amazing
+      'folke/neodev.nvim',
+    },
+  }
+
+  use { -- Autocompletion
+    'hrsh7th/nvim-cmp',
+    requires = { 'hrsh7th/cmp-nvim-lsp', 'L3MON4D3/LuaSnip', 'saadparwaiz1/cmp_luasnip' },
+  }
+  -- use 'ray-x/lsp_signature.nvim'
+
+  use { -- Highlight, edit, and navigate code
+    'nvim-treesitter/nvim-treesitter',
+    run = function()
+      pcall(require('nvim-treesitter.install').update { with_sync = true })
+    end,
+  }
+
+  use { -- Additional text objects via treesitter
+    'nvim-treesitter/nvim-treesitter-textobjects',
+    after = 'nvim-treesitter',
+  }
+
+  use 'navarasu/onedark.nvim' -- Theme inspired by Atom
+  use 'nvim-lualine/lualine.nvim' -- Fancier statusline
+  use 'lukas-reineke/indent-blankline.nvim'
+  use 'numToStr/Comment.nvim' -- "gc" to comment visual regions/lines
+--  use 'tpope/vim-sleuth' -- Detect tabstop and shiftwidth automatically
+
+  use { 'nvim-telescope/telescope.nvim', branch = '0.1.x', requires = { 'nvim-lua/plenary.nvim' } }
+  use { 'nvim-telescope/telescope-fzf-native.nvim', run = 'make', cond = vim.fn.executable 'make' == 1 }
+
+  use { 'folke/zen-mode.nvim', config = function() require("zen-mode").setup { } end }
+  use 'folke/which-key.nvim'
+  use 'unblevable/quick-scope'
+  use 'wakatime/vim-wakatime'
+  use 'airblade/vim-rooter'
+
+  use 'morhetz/gruvbox'
+  use 'ptzz/lf.vim'
+  use 'voldikss/vim-floaterm'
+
+  -- Add custom plugins to packer from ~/.config/nvim/lua/custom/plugins.lua
+  local has_plugins, plugins = pcall(require, 'custom.plugins')
+  if has_plugins then
+    plugins(use)
+  end
+
+  if is_bootstrap then
+    require('packer').sync()
+  end
+end)
+
+-- When we are bootstrapping a configuration, it doesn't
+-- make sense to execute the rest of the init.lua.
+if is_bootstrap then
+  print '=================================='
+  print '    Plugins are being installed'
+  print '    Wait until Packer completes,'
+  print '       then restart nvim'
+  print '=================================='
+  return
+end
+
 vim.g.mapleader = " "
-
-vim.cmd [[
-call plug#begin(stdpath('data') . '/plugged')
-
-Plug 'scrooloose/nerdcommenter'
-Plug 'folke/zen-mode.nvim'
-Plug 'morhetz/gruvbox'
-Plug 'unblevable/quick-scope'
-Plug 'vim-airline/vim-airline'
-Plug 'wakatime/vim-wakatime'
-
-Plug 'nvim-lua/plenary.nvim'
-Plug 'nvim-telescope/telescope.nvim'
-Plug 'nvim-treesitter/nvim-treesitter', {'do': ':TSUpdate'}
-
-Plug 'airblade/vim-rooter'
-Plug 'ptzz/lf.vim'
-Plug 'voldikss/vim-floaterm'
-Plug 'lukas-reineke/indent-blankline.nvim'
-Plug 'folke/which-key.nvim'
-
-" LSP
-Plug 'neovim/nvim-lspconfig'
-Plug 'hrsh7th/nvim-cmp'
-Plug 'hrsh7th/cmp-nvim-lsp'
-Plug 'L3MON4D3/LuaSnip'
-Plug 'saadparwaiz1/cmp_luasnip'
-Plug 'ray-x/lsp_signature.nvim'
-
-" DAP
-Plug 'mfussenegger/nvim-dap'
-Plug 'leoluz/nvim-dap-go'
-Plug 'rcarriga/nvim-dap-ui'
-
-call plug#end()
-]]
-
 
 -- Can't believe I need to do this...
 vim.opt.mouse = ""
