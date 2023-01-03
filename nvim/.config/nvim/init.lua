@@ -28,9 +28,9 @@ require('packer').startup(function(use)
     'hrsh7th/nvim-cmp',
     requires = { 'hrsh7th/cmp-nvim-lsp', 'L3MON4D3/LuaSnip', 'saadparwaiz1/cmp_luasnip' },
   }
-  -- use 'ray-x/lsp_signature.nvim'
+  use 'ray-x/lsp_signature.nvim'
 
-  use { -- Highlight, edit, and navigate code
+  use {
     'nvim-treesitter/nvim-treesitter',
     run = function()
       pcall(require('nvim-treesitter.install').update { with_sync = true })
@@ -42,11 +42,10 @@ require('packer').startup(function(use)
     after = 'nvim-treesitter',
   }
 
-  use 'navarasu/onedark.nvim' -- Theme inspired by Atom
-  use 'nvim-lualine/lualine.nvim' -- Fancier statusline
+  use 'navarasu/onedark.nvim'
+  use 'nvim-lualine/lualine.nvim'
   use 'lukas-reineke/indent-blankline.nvim'
-  use 'numToStr/Comment.nvim' -- "gc" to comment visual regions/lines
---  use 'tpope/vim-sleuth' -- Detect tabstop and shiftwidth automatically
+  use 'numToStr/Comment.nvim'
 
   use { 'nvim-telescope/telescope.nvim', branch = '0.1.x', requires = { 'nvim-lua/plenary.nvim' } }
   use { 'nvim-telescope/telescope-fzf-native.nvim', run = 'make', cond = vim.fn.executable 'make' == 1 }
@@ -58,8 +57,18 @@ require('packer').startup(function(use)
   use 'airblade/vim-rooter'
 
   use 'morhetz/gruvbox'
-  use 'ptzz/lf.vim'
   use 'voldikss/vim-floaterm'
+
+  use {
+      "lmburns/lf.nvim",
+      config = function()
+          -- This feature will not work if the plugin is lazy-loaded
+          vim.g.lf_netrw = 1
+
+          vim.keymap.set("n", "<leader>fm", ":Lf<CR>")
+      end,
+      requires = {"nvim-lua/plenary.nvim", "akinsho/toggleterm.nvim"}
+  }
 
   -- Add custom plugins to packer from ~/.config/nvim/lua/custom/plugins.lua
   local has_plugins, plugins = pcall(require, 'custom.plugins')
@@ -215,6 +224,12 @@ require("which-key").setup {
 }
 
 vim.keymap.set("n", "<leader>fm", ":Lf<CR>", { noremap = true })
+
+require("lf").setup({
+    escape_quit = true,
+    border = "rounded",
+    --highlights = {FloatBorder = {guifg = require("kimbox.palette").colors.magenta}}
+})
 
 
 require('lsp')
