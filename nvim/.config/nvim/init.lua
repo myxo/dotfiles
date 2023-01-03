@@ -43,17 +43,20 @@ vim.opt.mouse = ""
 -- Common
 vim.opt.encoding = "utf-8"
 vim.opt.fileencoding = "utf-8"
+
 vim.opt.number = true
 vim.opt.relativenumber = true
 vim.opt.autoindent = true
+
 vim.opt.tabstop = 4
 vim.opt.softtabstop = 0
 vim.opt.expandtab = true
 vim.opt.shiftwidth = 4
+
 vim.opt.ruler = true
 vim.opt.wrap = true
 vim.opt.cursorline = true           -- Highlight current cursor line
-vim.opt.scrolloff = 6
+vim.opt.scrolloff = 8
 vim.opt.colorcolumn = "120"
 vim.opt.backup = false
 vim.opt.writebackup = false
@@ -103,8 +106,15 @@ vim.keymap.set("v", "<", "<gv",  { noremap = true })
 vim.keymap.set("v", ">", ">gv",  { noremap = true })
 
 -- Telescope
-vim.keymap.set("n", "<leader>p", "<cmd>Telescope find_files<cr>",  { noremap = true, desc = 'find files' })
-vim.keymap.set("n", "<F4>", "<cmd>Telescope live_grep<cr>",  { noremap = true, desc = 'grep' })
+local telescope = require('telescope.builtin')
+vim.keymap.set("n", "<leader>p", telescope.git_files,  { noremap = true, desc = 'git files' })
+vim.keymap.set("n", "<leader>ff", telescope.find_files,  { noremap = true, desc = 'find files' })
+vim.keymap.set("n", "<leader>fg", telescope.live_grep,  { noremap = true, desc = 'grep' })
+
+-- Copy to clipboard (not working?)
+vim.keymap.set("n", "<leader>y", "\"+y")
+vim.keymap.set("v", "<leader>y", "\"+y")
+vim.keymap.set("n", "<leader>Y", "\"+Y")
 
 -- Reload vimrc
 --    nnoremap <leader>rv :source<Space>$MYVIMRC<cr>
@@ -156,5 +166,8 @@ vim.api.nvim_create_autocmd("FileType", {
 require("which-key").setup {
 }
 
+vim.keymap.set("n", "<leader>fm", ":Lf<CR>", { noremap = true })
+
 
 require('lsp')
+require('treesitter')

@@ -32,7 +32,7 @@ end
 
 -- Use a loop to conveniently call 'setup' on multiple servers and
 -- map buffer local keybindings when the language server attaches
-local servers = { 'pyright', 'gopls' }
+local servers = { 'pyright', 'gopls', 'clangd' }
 for _, lsp in pairs(servers) do
   require('lspconfig')[lsp].setup {
     capabilities = capabilities,
@@ -54,12 +54,6 @@ nvim_lsp.rust_analyzer.setup{
         }
     },
     cmd = { 'rustup',  'run', 'stable', 'rust-analyzer' },
-}
-
-nvim_lsp.clangd.setup {
-    capabilities = capabilities,
-    on_attach = on_attach,
-    cmd = { 'clangd-13' },
 }
 
 -- Setup nvim-cmp.
