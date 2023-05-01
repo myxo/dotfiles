@@ -23,11 +23,12 @@ local on_attach = function(client, bufnr)
   vim.keymap.set("n", "<leader>dp", vim.diagnostic.goto_prev, {buffer = 0, desc = 'prev problem'})
   vim.keymap.set("n", "<leader>dl", "<cmd>Telescope diagnostics<cr>", {buffer = 0, desc = 'list problems'})
   vim.keymap.set("n", "<leader>lr", vim.lsp.buf.rename, {buffer = 0, desc = 'rename'})
-  vim.keymap.set("n", "<leader>lf", vim.lsp.buf.formatting, {buffer = 0, desc = 'format'})
+  vim.keymap.set('n', '<leader>lf', function() vim.lsp.buf.format { async = true } end, opts)
   vim.keymap.set("n", "<leader>la", vim.lsp.buf.code_action, {buffer = 0, desc = 'code action'})
   vim.keymap.set("n", "<leader>ls", vim.lsp.buf.signature_help, {buffer = 0, desc = 'signature'})
+  vim.keymap.set("i", "<C-@>", vim.lsp.buf.signature_help, {buffer = 0, desc = 'signature'})
 
-  require "lsp_signature".on_attach(signature_setup, bufnr)
+  -- require "lsp_signature".on_attach(signature_setup, bufnr)
 end
 
 -- Use a loop to conveniently call 'setup' on multiple servers and

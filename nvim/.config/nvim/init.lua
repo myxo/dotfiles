@@ -56,18 +56,25 @@ require('packer').startup(function(use)
   use 'wakatime/vim-wakatime'
   use 'airblade/vim-rooter'
 
-  use 'morhetz/gruvbox'
   use 'voldikss/vim-floaterm'
 
   use {
       "lmburns/lf.nvim",
       config = function()
           -- This feature will not work if the plugin is lazy-loaded
-          vim.g.lf_netrw = 1
+          -- vim.g.lf_netrw = 0
 
           vim.keymap.set("n", "<leader>fm", ":Lf<CR>")
       end,
       requires = {"nvim-lua/plenary.nvim", "akinsho/toggleterm.nvim"}
+  }
+
+  use {
+      "folke/todo-comments.nvim",
+      requires = "nvim-lua/plenary.nvim",
+      config = function()
+        require("todo-comments").setup { }
+      end
   }
 
   -- Add custom plugins to packer from ~/.config/nvim/lua/custom/plugins.lua
@@ -195,15 +202,11 @@ vim.g.qs_highlight_on_keys = {'f', 'F', 't', 'T'}
 -- Disables automatic commenting on newline:
 vim.cmd [[autocmd FileType * setlocal formatoptions-=c formatoptions-=r formatoptions-=o]]
 
--- Gruvbox
-vim.cmd [[
-    if (has("termguicolors"))
-        set termguicolors
-        set background=dark 
-        let g:gruvbox_contrast_dark='hard'
-        colorscheme gruvbox 
-    endif
-    ]]
+-- Theme
+require('onedark').setup {
+    style = 'warm'
+}
+require('onedark').load()
 
 -- Floaterm
 vim.g.floaterm_width = 0.8
