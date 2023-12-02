@@ -19,3 +19,5 @@
     ff = only
 [push]
     default = upstream
+[init]
+	defaultBranch = master
