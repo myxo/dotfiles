@@ -4,6 +4,8 @@ vim.opt.completeopt = {"menu", "menuone", "noselect"}
 -- Mappings.
 -- See `:help vim.diagnostic.*` for documentation on any of the below functions
 local capabilities = require('cmp_nvim_lsp').default_capabilities()
+capabilities.textDocument.completion.completionItem.snippetSupport = false -- turn off stupid snippets for all lsp
+
 local opts = { noremap=true, silent=true }
 
 -- Use an on_attach function to only map the following keys
@@ -33,7 +35,7 @@ end
 
 -- Use a loop to conveniently call 'setup' on multiple servers and
 -- map buffer local keybindings when the language server attaches
-local servers = { 'pyright', 'gopls', 'clangd' }
+local servers = { 'pyright', 'gopls', 'clangd', 'rust_analyzer' }
 for _, lsp in pairs(servers) do
   require('lspconfig')[lsp].setup {
     capabilities = capabilities,
@@ -42,20 +44,6 @@ for _, lsp in pairs(servers) do
 end
 
 local nvim_lsp = require'lspconfig'
-
-nvim_lsp.rust_analyzer.setup{
-    on_attach = on_attach,
-    capabilities = {
-        textDocument = {
-            completion = {
-                completionItem = {
-                    snippetSupport = false
-                }
-            }
-        }
-    },
-    cmd = { 'rustup',  'run', 'stable', 'rust-analyzer' },
-}
 
 -- Setup nvim-cmp.
 local cmp = require'cmp'
