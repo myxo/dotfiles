@@ -129,7 +129,7 @@ vim.opt.cmdheight = 1               -- Give more space for displaying messages.
 vim.opt.splitbelow = true           -- Splits open at the bottom and right, which is non-retarded, unlike vim defaults.
 vim.opt.splitright = true
 -- vim.opt.wildmode=longest,list,full  -- Enable autocompletion in command:
-vim.opt.statusline = "%F"
+-- vim.opt.statusline = "%F"
 vim.opt.list = true
 -- vim.cmd [[set listchars=tab:▸\ ,trail:·]]
 -- vim.opt.listchars:append("tab:▸\ ")
@@ -139,7 +139,6 @@ vim.opt.signcolumn = "yes"          -- Always show the signcolumn, otherwise it 
 vim.opt.autoread = true
 
 -- Search
-vim.opt.showmatch = true
 vim.opt.hlsearch = true
 vim.opt.incsearch = true
 vim.opt.ignorecase = true
@@ -179,6 +178,15 @@ vim.keymap.set("n", "<leader>fg", telescope.live_grep,  { noremap = true, desc =
 vim.keymap.set("n", "<leader>y", "\"+y")
 vim.keymap.set("v", "<leader>y", "\"+y")
 vim.keymap.set("n", "<leader>Y", "\"+Y")
+
+vim.keymap.set("n", "<up>", "<nop>")
+vim.keymap.set("n", "<down>", "<nop>")
+vim.keymap.set("n", "<left>", "<nop>")
+vim.keymap.set("n", "<right>", "<nop>")
+vim.keymap.set("i", "<up>", "<nop>")
+vim.keymap.set("i", "<down>", "<nop>")
+vim.keymap.set("i", "<left>", "<nop>")
+vim.keymap.set("i", "<right>", "<nop>")
 
 -- Reload vimrc
 --    nnoremap <leader>rv :source<Space>$MYVIMRC<cr>
@@ -223,6 +231,16 @@ vim.api.nvim_create_autocmd("FileType", {
     group = go_group
 })
 
+-- Highligh text that just been yanked
+vim.api.nvim_create_autocmd('TextYankPost', {
+  group = vim.api.nvim_create_augroup('highlight_yank', {}),
+  desc = 'Hightlight selection on yank',
+  pattern = '*',
+  callback = function()
+    vim.highlight.on_yank { higroup = 'IncSearch', timeout = 500 }
+  end,
+})
+
 require("which-key").setup {
 }
 
@@ -233,7 +251,6 @@ require("lf").setup({
     border = "rounded",
     --highlights = {FloatBorder = {guifg = require("kimbox.palette").colors.magenta}}
 })
-
 
 require('lsp')
 require('treesitter')
