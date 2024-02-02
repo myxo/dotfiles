@@ -246,6 +246,9 @@ require("which-key").setup {
 
 vim.keymap.set("n", "<leader>fm", ":Lf<CR>", { noremap = true })
 
+-- highlogh indented block of code
+require("ibl").setup()
+
 require("lf").setup({
     escape_quit = true,
     border = "rounded",
