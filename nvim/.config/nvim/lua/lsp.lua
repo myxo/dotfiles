@@ -53,8 +53,14 @@ local nvim_lsp = require'lspconfig'
 local cmp = require'cmp'
 
 cmp.setup({
-    completion = {
-        autocomplete = false, -- cmp-config.completion.autocomplete can have TriggerEvent, but I don't understand what I put there
+    matching = {
+        disallow_fullfuzzy_matching = true,
+    },
+    formatting = {
+        format = function(entry, vim_item)
+            vim_item.menu = string.sub(vim_item.menu, 1, 40) -- sometimes this column is too big =(
+            return vim_item
+        end
     },
     snippet = {
       expand = function(args) require('luasnip').lsp_expand(args.body) end,
