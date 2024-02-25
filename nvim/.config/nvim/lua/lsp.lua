@@ -58,7 +58,7 @@ cmp.setup({
     },
     formatting = {
         format = function(entry, vim_item)
-            if vim_item ~= nil then
+            if vim_item.menu ~= nil then
                 vim_item.menu = string.sub(vim_item.menu, 1, 40) -- sometimes this column is too big =(
             end
             return vim_item
