@@ -337,7 +337,15 @@ require("lazy").setup({
 			local servers = {
 				clangd = {},
 				gopls = {},
-				rust_analyzer = {},
+				rust_analyzer = {
+					settings = {
+						completion = {
+							autoimport = {
+								enable = false,
+							},
+						},
+					},
+				},
 				lua_ls = {
 					-- cmd = {...},
 					-- filetypes = { ...},
@@ -456,6 +464,15 @@ require("lazy").setup({
 					completion = cmp.config.window.bordered(),
 					documentation = cmp.config.window.bordered(),
 				},
+				-- TODO: хочется, чтобы написании текста, подсказка не прыгала по экрану
+				formatting = {
+					format = function(entry, vim_item)
+						if vim_item.menu ~= nil then
+							vim_item.menu = string.sub(vim_item.menu, 1, 40) -- sometimes this column is too big =(
+						end
+						return vim_item
+					end,
+				},
 
 				-- For an understanding of why these mappings were
 				-- chosen, you will need to read `:help ins-completion`
@@ -472,11 +489,11 @@ require("lazy").setup({
 					-- Accept ([y]es) the completion.
 					--  This will auto-import if your LSP supports it.
 					--  This will expand snippets if the LSP sent a snippet.
-					["<C-y>"] = cmp.mapping.confirm({ select = true }),
+					--["<C-y>"] = cmp.mapping.confirm({ select = true }),
 
 					-- If you prefer more traditional completion keymaps,
 					-- you can uncomment the following lines
-					--['<CR>'] = cmp.mapping.confirm { select = true },
+					["<CR>"] = cmp.mapping.confirm({ select = true }),
 					--['<Tab>'] = cmp.mapping.select_next_item(),
 					--['<S-Tab>'] = cmp.mapping.select_prev_item(),
 

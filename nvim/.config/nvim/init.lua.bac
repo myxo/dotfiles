@@ -1,0 +1,378 @@
+local lazypath = vim.fn.stdpath("data") .. "/lazy/lazy.nvim"
+if not (vim.uv or vim.loop).fs_stat(lazypath) then
+  vim.fn.system({
+    "git",
+    "clone",
+    "--filter=blob:none",
+    "https://github.com/folke/lazy.nvim.git",
+    "--branch=stable", -- latest stable release
+    lazypath,
+  })
+end
+vim.opt.rtp:prepend(lazypath)
+
+vim.g.mapleader = " "
+
+require("lazy").setup({
+    { -- LSP configuration
+        'neovim/nvim-lspconfig',
+        dependencies = {
+            { 'williamboman/mason.nvim', config = true }, -- NOTE: Must be loaded before dependants
+            'williamboman/mason-lspconfig.nvim',
+            'WhoIsSethDaniel/mason-tool-installer.nvim',
+
+            -- Useful status updates for LSP.
+            -- NOTE: `opts = {}` is the same as calling `require('fidget').setup({})`
+            { 'j-hui/fidget.nvim', opts = {} },
+            { 'folke/neodev.nvim', opts = {} },
+        },
+        config = function()
+            vim.api.nvim_create_autocmd('LspAttach', {
+            group = vim.api.nvim_create_augroup('kickstart-lsp-attach', { clear = true }),
+            callback = function(event)
+                local map = function(keys, func, desc)
+                    vim.keymap.set('n', keys, func, { buffer = event.buf, desc = 'LSP: ' .. desc })
+                end
+
+                map('gd', require('telescope.builtin').lsp_definitions, '[G]oto [D]efinition')
+                map('gD', vim.lsp.buf.declaration, '[G]oto [D]eclaration')
+                map('gr', require('telescope.builtin').lsp_references, '[G]oto [R]eferences')
+                map('gi', require('telescope.builtin').lsp_implementations, '[G]oto [I]mplementation')
+                map('gt', require('telescope.builtin').lsp_type_definitions, 'type definition')
+                map('<leader>ds', require('telescope.builtin').lsp_document_symbols, '[D]ocument [S]ymbols')
+                map('<leader>ws', require('telescope.builtin').lsp_dynamic_workspace_symbols, '[W]orkspace [S]ymbols')
+                map('<leader>lr', vim.lsp.buf.rename, 'rename')
+                map('<leader>la', vim.lsp.buf.code_action, 'code action')
+                map('K', vim.lsp.buf.hover, 'Hover Documentation')
+
+                  -- The following two autocommands are used to highlight references of the
+                  -- word under your cursor when your cursor rests there for a little while.
+                  --    See `:help CursorHold` for information about when this is executed
+                  --
+                  -- When you move your cursor, the highlights will be cleared (the second autocommand).
+                  local client = vim.lsp.get_client_by_id(event.data.client_id)
+                  if client and client.server_capabilities.documentHighlightProvider then
+                    local highlight_augroup = vim.api.nvim_create_augroup('kickstart-lsp-highlight', { clear = false })
+                    vim.api.nvim_create_autocmd({ 'CursorHold', 'CursorHoldI' }, {
+                      buffer = event.buf,
+                      group = highlight_augroup,
+                      callback = vim.lsp.buf.document_highlight,
+                    })
+
+                    vim.api.nvim_create_autocmd({ 'CursorMoved', 'CursorMovedI' }, {
+                      buffer = event.buf,
+                      group = highlight_augroup,
+                      callback = vim.lsp.buf.clear_references,
+                    })
+
+                    vim.api.nvim_create_autocmd('LspDetach', {
+                      group = vim.api.nvim_create_augroup('kickstart-lsp-detach', { clear = true }),
+                      callback = function(event2)
+                        vim.lsp.buf.clear_references()
+                        vim.api.nvim_clear_autocmds { group = 'kickstart-lsp-highlight', buffer = event2.buf }
+                      end,
+                    })
+                  end
+
+                  -- The following autocommand is used to enable inlay hints in your
+                  -- code, if the language server you are using supports them
+                  --
+                  -- This may be unwanted, since they displace some of your code
+                  if client and client.server_capabilities.inlayHintProvider and vim.lsp.inlay_hint then
+                    map('<leader>th', function()
+                      vim.lsp.inlay_hint.enable(not vim.lsp.inlay_hint.is_enabled())
+                    end, '[T]oggle Inlay [H]ints')
+                  end
+            end
+        end
+    }
+})
+
+require('packer').startup(function(use)
+  use { -- LSP
+    requires = {
+      -- Automatically install LSPs to stdpath for neovim
+      'williamboman/mason.nvim',
+      'williamboman/mason-lspconfig.nvim',
+
+      -- Useful status updates for LSP
+      'j-hui/fidget.nvim',
+
+      -- Additional lua configuration, makes nvim stuff amazing
+      'folke/neodev.nvim',
+    },
+  }
+
+  use { -- Autocompletion
+    'hrsh7th/nvim-cmp',
+    requires = { 'hrsh7th/cmp-nvim-lsp', 'L3MON4D3/LuaSnip', 'saadparwaiz1/cmp_luasnip' },
+  }
+  use 'ray-x/lsp_signature.nvim'
+
+  use {
+    'nvim-treesitter/nvim-treesitter',
+    run = function()
+      pcall(require('nvim-treesitter.install').update { with_sync = true })
+    end,
+  }
+
+  use { -- Additional text objects via treesitter
+    'nvim-treesitter/nvim-treesitter-textobjects',
+    after = 'nvim-treesitter',
+  }
+
+  use 'navarasu/onedark.nvim'
+  use 'nvim-lualine/lualine.nvim'
+  use 'lukas-reineke/indent-blankline.nvim'
+
+  use { 'nvim-telescope/telescope.nvim', branch = '0.1.x', requires = { 'nvim-lua/plenary.nvim' } }
+  use { 'nvim-telescope/telescope-fzf-native.nvim', run = 'make', cond = vim.fn.executable 'make' == 1 }
+
+  use { 'folke/zen-mode.nvim', config = function() require("zen-mode").setup { } end }
+  use 'folke/which-key.nvim'
+  use 'unblevable/quick-scope'
+  use 'wakatime/vim-wakatime'
+  use 'airblade/vim-rooter'
+
+  use 'voldikss/vim-floaterm'
+
+  use {
+      "lmburns/lf.nvim",
+      config = function()
+          -- This feature will not work if the plugin is lazy-loaded
+          -- vim.g.lf_netrw = 0
+
+          vim.keymap.set("n", "<leader>fm", ":Lf<CR>")
+      end,
+      requires = {"nvim-lua/plenary.nvim", "akinsho/toggleterm.nvim"}
+  }
+
+  use {
+      "folke/todo-comments.nvim",
+      requires = "nvim-lua/plenary.nvim",
+      config = function()
+        require("todo-comments").setup { }
+      end
+  }
+
+  use {
+    'numToStr/Comment.nvim',
+    config = function()
+        require('Comment').setup()
+    end
+  }
+
+  use { "rcarriga/nvim-dap-ui" }
+  use { "nvim-neotest/nvim-nio" }
+
+  use {
+      'mfussenegger/nvim-dap',
+      config = function()
+          local dap, dapui = require("dap"), require("dapui")
+          dap.listeners.before.attach.dapui_config = function()
+            dapui.open()
+          end
+          dap.listeners.before.launch.dapui_config = function()
+            dapui.open()
+          end
+          dap.listeners.before.event_terminated.dapui_config = function()
+            dapui.close()
+          end
+          dap.listeners.before.event_exited.dapui_config = function()
+            dapui.close()
+          end
+          vim.keymap.set('n', '<F5>', dap.continue)
+          vim.keymap.set('n', '<F10>', dap.step_over)
+          vim.keymap.set('n', '<F11>', dap.step_into)
+          vim.keymap.set('n', '<F12>', dap.step_out)
+          vim.keymap.set('n', '<Leader>dt', dap.toggle_breakpoint)
+          vim.keymap.set('n', '<Leader>db', dap.set_breakpoint)
+      end
+--      require("dapui").setup()
+  }
+
+  --use 'leoluz/nvim-dap-go'
+
+  -- Add custom plugins to packer from ~/.config/nvim/lua/custom/plugins.lua
+  local has_plugins, plugins = pcall(require, 'custom.plugins')
+  if has_plugins then
+    plugins(use)
+  end
+
+  if is_bootstrap then
+    require('packer').sync()
+  end
+end)
+
+  -- require('dap-go').setup()
+-- When we are bootstrapping a configuration, it doesn't
+-- make sense to execute the rest of the init.lua.
+if is_bootstrap then
+  print '=================================='
+  print '    Plugins are being installed'
+  print '    Wait until Packer completes,'
+  print '       then restart nvim'
+  print '=================================='
+  return
+end
+
+-- Can't believe I need to do this...
+vim.opt.mouse = ""
+
+-- Common
+vim.opt.encoding = "utf-8"
+vim.opt.fileencoding = "utf-8"
+
+vim.opt.number = true
+vim.opt.relativenumber = true
+vim.opt.autoindent = true
+
+vim.opt.tabstop = 4
+vim.opt.softtabstop = 0
+vim.opt.expandtab = true
+vim.opt.shiftwidth = 4
+
+vim.opt.ruler = true
+vim.opt.wrap = true
+vim.opt.cursorline = true           -- Highlight current cursor line
+vim.opt.scrolloff = 8
+vim.opt.colorcolumn = "120"
+vim.opt.backup = false
+vim.opt.writebackup = false
+vim.opt.hidden = true               -- To keep multiple buffers open
+vim.opt.cmdheight = 1               -- Give more space for displaying messages.
+vim.opt.splitbelow = true           -- Splits open at the bottom and right, which is non-retarded, unlike vim defaults.
+vim.opt.splitright = true
+-- vim.opt.wildmode=longest,list,full  -- Enable autocompletion in command:
+-- vim.opt.statusline = "%F"
+vim.opt.list = true
+-- vim.cmd [[set listchars=tab:▸\ ,trail:·]]
+-- vim.opt.listchars:append("tab:▸\ ")
+vim.opt.listchars:append("trail:·")
+vim.opt.title = true
+vim.opt.signcolumn = "yes"          -- Always show the signcolumn, otherwise it would shift the text each time diagnostics appear
+vim.opt.autoread = true
+
+-- Search
+vim.opt.hlsearch = true
+vim.opt.incsearch = true
+vim.opt.ignorecase = true
+
+-- Permament undo
+vim.opt.undodir = os.getenv("HOME") .. "/.vimdid"
+vim.opt.undofile = true
+
+
+-- Esc is just too far
+vim.keymap.set('i', "jj", "<Esc>",  { noremap = true, desc = 'switch to normal mode' })
+
+-- Turn off hlsearch
+vim.keymap.set("n", "<leader>h", ":silent! nohls<cr>",  { noremap = true, desc = 'silent highlight' })
+
+
+-- Goyo plugin makes text more readable when writing prose:
+vim.keymap.set("n", "<leader>g", "<cmd>ZenMode<CR>",  { noremap = true, desc = 'zen mode' })
+
+-- Shortcutting split navigation, saving a keypress:
+vim.keymap.set("", "<C-h>", "<C-w>h",  { noremap = true })
+vim.keymap.set("", "<C-j>", "<C-w>j",  { noremap = true })
+vim.keymap.set("", "<C-k>", "<C-w>k",  { noremap = true })
+vim.keymap.set("", "<C-l>", "<C-w>l",  { noremap = true })
+
+-- autocomplete only {}
+vim.keymap.set("i", "{<CR>", "{<CR>}<Esc>ko",  { noremap = true })
+
+-- Do not loose selection after tabbing
+vim.keymap.set("v", "<", "<gv",  { noremap = true })
+vim.keymap.set("v", ">", ">gv",  { noremap = true })
+
+-- Telescope
+local telescope = require('telescope.builtin')
+vim.keymap.set("n", "<leader>p", telescope.git_files,  { noremap = true, desc = 'git files' })
+vim.keymap.set("n", "<leader>ff", telescope.find_files,  { noremap = true, desc = 'find files' })
+vim.keymap.set("n", "<leader>fg", telescope.live_grep,  { noremap = true, desc = 'grep' })
+
+-- Copy to clipboard (not working?)
+vim.keymap.set("n", "<leader>y", "\"+y")
+vim.keymap.set("v", "<leader>y", "\"+y")
+vim.keymap.set("n", "<leader>Y", "\"+Y")
+
+vim.keymap.set("n", "<up>", "<nop>")
+vim.keymap.set("n", "<down>", "<nop>")
+vim.keymap.set("n", "<left>", "<nop>")
+vim.keymap.set("n", "<right>", "<nop>")
+vim.keymap.set("i", "<up>", "<nop>")
+vim.keymap.set("i", "<down>", "<nop>")
+vim.keymap.set("i", "<left>", "<nop>")
+vim.keymap.set("i", "<right>", "<nop>")
+
+-- Reload vimrc
+--    nnoremap <leader>rv :source<Space>$MYVIMRC<cr>
+
+-- Edit vimrc
+--    nnoremap <leader>ev :vs $MYVIMRC<cr>
+
+-- Toggles between last buffers
+vim.keymap.set("n", "<leader><leader>", "<c-^>",  { noremap = true, desc = 'last buffer' })
+
+-- Really prefer to type :help
+vim.keymap.set("", "<F1>", "<Esc>",  { noremap = true })
+vim.keymap.set("i", "<F1>", "<Esc>",  { noremap = true })
+
+-- Write readonly files
+vim.keymap.set("c", "w!!", "w !sudo tee %",  { noremap = true })
+
+-- quick-scope: trigger a highlight in the appropriate direction when pressing these keys:
+vim.g.qs_highlight_on_keys = {'f', 'F', 't', 'T'}
+
+-- Disables automatic commenting on newline:
+vim.cmd [[autocmd FileType * setlocal formatoptions-=c formatoptions-=r formatoptions-=o]]
+
+-- Theme
+require('onedark').setup {
+    style = 'warm'
+}
+require('onedark').load()
+
+-- Floaterm
+vim.g.floaterm_width = 0.8
+vim.g.floaterm_height = 0.8
+vim.g.floaterm_autoclose = 1 -- Close window if the job exits normally
+vim.keymap.set("n", "<F12>", ":FloatermToggle<CR>",  { noremap = true })
+vim.cmd [[tnoremap   <silent>   <F12>   <C-\><C-n>:FloatermToggle<CR>]]
+
+-- Golang specifics, use tabs instead of spaces
+local go_group = vim.api.nvim_create_augroup("go_settings_group", {})
+vim.api.nvim_create_autocmd("FileType", {
+    pattern = "go",
+    callback = function() vim.opt.expandtab = false end,
+    group = go_group
+})
+
+-- Highligh text that just been yanked
+vim.api.nvim_create_autocmd('TextYankPost', {
+  group = vim.api.nvim_create_augroup('highlight_yank', {}),
+  desc = 'Hightlight selection on yank',
+  pattern = '*',
+  callback = function()
+    vim.highlight.on_yank { higroup = 'IncSearch', timeout = 500 }
+  end,
+})
+
+require("which-key").setup {
+}
+
+vim.keymap.set("n", "<leader>fm", ":Lf<CR>", { noremap = true })
+
+-- highlogh indented block of code
+require("ibl").setup()
+
+require("lf").setup({
+    escape_quit = true,
+    border = "rounded",
+    --highlights = {FloatBorder = {guifg = require("kimbox.palette").colors.magenta}}
+})
+
+require('lsp')
+--require('dap')
+require('treesitter')
