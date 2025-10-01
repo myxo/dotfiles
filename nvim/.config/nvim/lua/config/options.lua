@@ -29,12 +29,13 @@ vim.opt.scrolloff = 10
 vim.opt.colorcolumn = "120"
 vim.opt.backup = false
 vim.opt.writebackup = false
-vim.opt.hidden = true -- To keep multiple buffers open
-vim.opt.cmdheight = 1 -- Give more space for displaying messages.
+vim.opt.hidden = true     -- To keep multiple buffers open
+vim.opt.cmdheight = 1     -- Give more space for displaying messages.
 vim.opt.splitbelow = true -- Splits open at the bottom and right, which is non-retarded, unlike vim defaults.
 vim.opt.splitright = true
 -- vim.opt.wildmode=longest,list,full  -- Enable autocompletion in command:
 -- vim.opt.statusline = "%F"
+vim.opt.winborder = "rounded"
 --
 -- Sets how neovim will display certain whitespace characters in the editor.
 vim.opt.list = true
