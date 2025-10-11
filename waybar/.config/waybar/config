@@ -1,12 +1,13 @@
 {
-    // "layer": "top", // Waybar at top layer
-    // "position": "bottom", // Waybar position (top|bottom|left|right)
+    "layer": "top", // Waybar at top layer
+    "position": "top", // Waybar position (top|bottom|left|right)
     "height": 30, // Waybar height (to be removed for auto height)
     // "width": 1280, // Waybar width
     //"spacing": 4, // Gaps between modules (4px)
     // Choose the order of the modules
-    "modules-left": ["sway/workspaces", "sway/mode", "custom/media"],
-    "modules-center": ["sway/window"],
+
+    "modules-left": ["hyprland/workspaces", "hyprland/mode", "custom/appmenu", "hyprland/window"],
+    "modules-center": [],
     "modules-right": ["idle_inhibitor", "pulseaudio", "network", "cpu", "memory", "temperature", "backlight", "sway/language", "battery", "clock", "tray"],
     // Modules configuration
     // "sway/workspaces": {
@@ -33,9 +34,6 @@
             "unlocked": ""
         }
     },
-    "sway/mode": {
-        "format": "<span style=\"italic\">{}</span>"
-    },
     "idle_inhibitor": {
         "format": "{icon}",
         "format-icons": {
@@ -48,11 +46,20 @@
         "spacing": 10
     },
     "clock": {
-        // "timezone": "America/New_York",
+        "format": "{:%I:%M %p}",
         "interval": 1,
-        "format": "{:%Y-%m-%d %H:%M:%S}",
-        "tooltip-format": "<big>{:%Y %B}</big>\n<tt><small>{calendar}</small></tt>",
-        "format-alt": "{:%Y-%m-%d}"
+        "rotate": 0,
+        "format-alt": "{  %d·%m·%y}",
+        "tooltip-format": "<span>{calendar}</span>",
+        "calendar": {
+            "mode": "month",
+            "format": {
+                "months": "<span color='#ff6699'><b>{}</b></span>",
+                "days": "<span color='#cdd6f4'><b>{}</b></span>",
+                "weekdays": "<span color='#7CD37C'><b>{}</b></span>",
+                "today": "<span color='#ffcc66'><b>{}</b></span>"
+            }
+        }
     },
     "cpu": {
         "interval": 2,
