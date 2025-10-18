@@ -1,6 +1,3 @@
-#sudo apt install zsh
-#sh -c "$(wget -O- https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
-
 mkdir -p "$HOME/.config/zsh/plugins"
 git clone https://github.com/sindresorhus/pure.git ${HOME}/.config/zsh/plugins/pure
 git clone https://github.com/zsh-users/zsh-autosuggestions ${HOME}/.config/zsh/plugins/zsh-autosuggestions
