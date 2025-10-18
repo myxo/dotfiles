@@ -12,7 +12,6 @@ plugins=(
     cp
     zsh-autosuggestions
     zsh-syntax-highlighting
-    zsh-vi-mode
 )
 source $ZSH/oh-my-zsh.sh
 
@@ -45,27 +44,25 @@ then
     PURE_PROMPT_SYMBOL=%
 fi
 prompt pure
+PURE_GIT_PULL=0
 
 TIMEFMT=$'\nreal\t%E\nuser\t%U\nsys\t%S'
 
-alias ls='ls -h --color=auto --group-directories-first'
-alias ll='ls -lh --color=auto --group-directories-first'
 alias grep='grep --colour=auto'
 alias df='df -h'
 alias du='du -h --max-depth=1 | sort -h'
+alias du_raw='du' # need this sometime =/
 alias piy='ping ya.ru'
 alias ht='htop'
-alias psg='ps aux | grep '
-alias nd='nautilus --no-desktop'
-alias ra='ranger'
-alias gh='git hist'
-alias gst='git status'
-alias mk='make'
-alias mkm='make -j8'
-alias mkc='make clean'
-alias mr='make run'
 alias nv='nvim'
-alias fm='vifm'
+
+if [[ $OSTYPE == darwin* ]]; then
+    alias ls='gls -h --color=auto --group-directories-first'
+    alias ll='gls -lh --color=auto --group-directories-first'
+else
+    alias ls='ls -h --color=auto --group-directories-first'
+    alias ll='ls -lh --color=auto --group-directories-first'
+fi
 
 # Enable automatic rehash of commands 
 _force_rehash() { 
@@ -77,12 +74,17 @@ unsetopt beep
 
 export _JAVA_AWT_WM_NONREPARENTING=1
 
-export PATH=$PATH:/home/myxo/.cargo/bin
+export PATH=$PATH:$HOME/.cargo/bin
 export PATH=$PATH:$HOME/.local/bin
 export PATH=$PATH:$HOME/scripts
 export PATH=$PATH:$HOME/app/bin
 export PATH=$PATH:$HOME/go/bin
 export PATH=$PATH:/usr/local/go/bin
+
+if [[ $OSTYPE == darwin* ]]; then
+    export LIBRARY_PATH="$LIBRARY_PATH:$(brew --prefix)/lib"
+    export PATH="/opt/homebrew/opt/openjdk/bin:$PATH"
+fi
 
 # script for extracting from different archives
 ex () {
@@ -109,5 +111,8 @@ ex () {
 
 setopt no_share_history
 
-# opam configuration
-[[ ! -r /home/myxo/.opam/opam-init/init.zsh ]] || source /home/myxo/.opam/opam-init/init.zsh  > /dev/null 2> /dev/null
+# machine specific settings
+if [ -f ~/.zsh_local ]; then
+    source ~/.zsh_local
+fi
+
