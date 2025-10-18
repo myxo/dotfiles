@@ -3,18 +3,11 @@ DISABLE_AUTO_UPDATE=true
 
 EDITOR=nvim
 
-fpath+=$HOME/.zsh/pure
-export ZSH=$HOME/.oh-my-zsh
+fpath+=$HOME/.config/zsh/plugins/pure/
 
-plugins=(
-    compleat 
-    colored-man-pages
-    cp
-    zsh-autosuggestions
-    zsh-syntax-highlighting
-)
+export ZSH="$HOME/.oh-my-zsh"
+#plugins=(compleat)
 source $ZSH/oh-my-zsh.sh
-
 
 zstyle ':completion:*' menu select
 zstyle :compinstall filename '/home/myxo/.zshrc'
@@ -22,7 +15,7 @@ zstyle ':completion:*' completer _oldlist _expand _force_rehash _complete
 zstyle ':completion:*' matcher-list ''
 unsetopt AUTO_CD
 
-
+autoload -U colors && colors
 autoload -U promptinit && promptinit
 promptinit;
 
@@ -115,4 +108,9 @@ setopt no_share_history
 if [ -f ~/.zsh_local ]; then
     source ~/.zsh_local
 fi
+
+source $HOME/.config/zsh/plugins/colored-man-pages/colored-man-pages.plugin.zsh
+source $HOME/.config/zsh/plugins/zsh-autosuggestions/zsh-autosuggestions.zsh
+source $HOME/.config/zsh/plugins/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
+
 
