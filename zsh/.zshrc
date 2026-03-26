@@ -9,6 +9,10 @@ export ZSH="$HOME/.oh-my-zsh"
 #plugins=(compleat)
 source $ZSH/oh-my-zsh.sh
 
+fpath=(~/.zsh/completions $fpath)
+autoload -Uz compinit
+compinit
+
 zstyle ':completion:*' menu select
 zstyle :compinstall filename '/home/myxo/.zshrc'
 zstyle ':completion:*' completer _oldlist _expand _force_rehash _complete
@@ -43,7 +47,6 @@ TIMEFMT=$'\nreal\t%E\nuser\t%U\nsys\t%S'
 
 alias grep='grep --colour=auto'
 alias df='df -h'
-alias du='du -h --max-depth=1 | sort -h'
 alias du_raw='du' # need this sometime =/
 alias piy='ping ya.ru'
 alias ht='htop'
@@ -53,6 +56,7 @@ if [[ $OSTYPE == darwin* ]]; then
     alias ls='gls -h --color=auto --group-directories-first'
     alias ll='gls -lh --color=auto --group-directories-first'
 else
+    alias du='du -h --max-depth=1 | sort -h'
     alias ls='ls -h --color=auto --group-directories-first'
     alias ll='ls -lh --color=auto --group-directories-first'
 fi
@@ -114,3 +118,6 @@ source $HOME/.config/zsh/plugins/zsh-autosuggestions/zsh-autosuggestions.zsh
 source $HOME/.config/zsh/plugins/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
 
 
+
+# Added by Windsurf
+export PATH="/Users/myxo/.codeium/windsurf/bin:$PATH"

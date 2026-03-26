@@ -1,6 +1,21 @@
 local wezterm = require 'wezterm'
 local config = {}
 
+function notify(msg)
+    wezterm.run_child_process({
+        "terminal-notifier",
+        "-title", "WezTerm",
+        "-message", msg,
+    })
+end
+
+wezterm.on("bell", function(window, pane)
+    notify("Bell triggered from pane: " .. pane:pane_id())
+end)
+
+config.audible_bell = "Disabled"
+
+
 -- Get the current appearance from macOS
 local function get_appearance_theme()
     local appearance = wezterm.gui.get_appearance()
@@ -19,6 +34,8 @@ config.color_scheme = get_appearance_theme()
 -- config.color_scheme = 'Batman'
 config.window_decorations = "RESIZE"
 config.harfbuzz_features = { 'calt=0', 'clig=0', 'liga=0' }
+
+config.mouse_wheel_scrolls_tabs = false
 
 -- config.window_background_opacity = 0.8
 -- config.macos_window_background_blur = 10
