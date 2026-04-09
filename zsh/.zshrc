@@ -5,15 +5,19 @@ EDITOR=nvim
 
 fpath+=$HOME/.config/zsh/plugins/pure/
 
+export ZSH="$HOME/.oh-my-zsh"
+#plugins=(compleat)
+source $ZSH/oh-my-zsh.sh
+
 zstyle ':completion:*' menu select
 zstyle :compinstall filename '/home/myxo/.zshrc'
 zstyle ':completion:*' completer _oldlist _expand _force_rehash _complete
 zstyle ':completion:*' matcher-list ''
 unsetopt AUTO_CD
 
-autoload -Uz compinit && compinit
 autoload -U colors && colors
 autoload -U promptinit && promptinit
+promptinit;
 
 HISTFILE=~/.histfile
 HISTSIZE=1000
