@@ -20,9 +20,12 @@ vim.diagnostic.config {
 	},
 }
 -- TODO: for this work I should pass it to lsp.config, leave it here for now, and try
--- local capabilities = vim.lsp.protocol.make_client_capabilities()
--- capabilities = require('blink.cmp').get_lsp_capabilities()
--- capabilities.textDocument.completion.completionItem.snippetSupport = false -- turn off stupid snippets for all lsp
+local capabilities = require('blink.cmp').get_lsp_capabilities()
+capabilities.textDocument.completion.completionItem.snippetSupport = false -- turn off stupid snippets for all lsp
+
+vim.lsp.config('*', {
+  capabilities = capabilities,
+})
 
 vim.lsp.enable({
 	"clangd",

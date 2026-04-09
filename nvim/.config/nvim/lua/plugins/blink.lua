@@ -35,6 +35,7 @@ return {
 
 
     completion = {
+      keyword = { range = 'prefix' },
       documentation = { auto_show = true },
       accept = { auto_brackets = { enabled = false }, },
       list = { selection = { preselect = true, auto_insert = false } },
